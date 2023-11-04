@@ -18,9 +18,15 @@ def find_match(arr,choose_k):
         sample_image_arr = np.array(sample_image, dtype=np.int32)
         distance = np.sqrt(sum((arr - sample_image_arr)**2))
         distances[i] = mnist_train[i][1], distance
+        actual_labels[i] = label
         
     sorted_distances = np.argsort(distances)
     k_elements = sorted_distances[:choose_k]
+    predicted_label = torch.mode(actual_labels[k_indices]).values.item(0)
+
     return torch.mode(k_elements).values.item(0)
 
-find_match(np.array(mnist_test[1]), 5)
+for i in range(1000):
+    find_match(np.array(mnist_test[1]), 5)
+
+print("Accuracy: " + sum(actual_label == predicted_labels) / 1000 * 100)
