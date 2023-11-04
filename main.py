@@ -19,7 +19,7 @@ def find_match(arr,choose_k):
         distance = np.sqrt(sum((arr - sample_image_arr)**2))
         distances[i] = mnist_train[i][1], distance
         
-    sorted_distances = np.argsort(-distances[:1])
+    sorted_distances = np.argsort(distances)
     k_elements = sorted_distances[:choose_k]
     return torch.mode(k_elements).values.item(0)
 
