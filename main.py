@@ -11,7 +11,7 @@ mnist_test = torchvision.datasets.MNIST(root='./data', train=False, download=Tru
 
 def find_match(arr, choose_k):
     distances = np.empty(1000, dtype=object) 
-    random_indices = random.sample(range(len(mnist_test)), 1000)
+    random_indices = random.sample(range(len(mnist_train)), 1000)
     for i in random_indices:
         sample_image, label = mnist_train[i]
         sample_image_arr = np.array(sample_image, dtype=np.int32)
