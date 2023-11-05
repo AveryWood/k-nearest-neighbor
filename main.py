@@ -10,7 +10,7 @@ mnist_test = torchvision.datasets.MNIST(root='./data', train=False, download=Tru
 
 
 def find_match(arr, choose_k):
-    distances = np.empty(1000, dtype=object) 
+    distances = np.full(len(mnist_train), np.inf) 
     random_indices = random.sample(range(len(mnist_train)), 1000)
     for i in random_indices:
         sample_image, label = mnist_train[i]
@@ -22,7 +22,7 @@ def find_match(arr, choose_k):
     k_indices = sorted_distances[:choose_k]
     predicted_labels = [mnist_train[i][1] for i in k_indices]
 
-    return torch.mode(predicted_labels).values.item(0)
+    return np.bincount(k_indices).argmax()
 
 num_trials = 500
 actual_labels = np.empty(1000, dtype=object)
@@ -30,7 +30,7 @@ predicted_labels = np.empty(1000, dtype=object)
 
 for i in range(num_trials):
     input_image, true_label = mnist_test[i]
-    predicted_label = find_match(np.array(input_image).reshape(-1), 5)
+    predicted_label = find_match(np.array(input_image), 5)
     actual_labels[i] = true_label
     predicted_labels[i] = predicted_label
 
