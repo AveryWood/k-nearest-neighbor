@@ -9,29 +9,30 @@ mnist_train = torchvision.datasets.MNIST(root='./data', train=True, download=Tru
 mnist_test = torchvision.datasets.MNIST(root='./data', train=False, download=True)
 
 
-def find_match(arr,choose_k):
+def find_match(arr, choose_k):
     distances = np.empty(1000, dtype=object) 
-    matches = np.empty(1000, dtype=object)
     random_indices = random.sample(range(len(mnist_test)), 1000)
     for i in random_indices:
         sample_image, label = mnist_train[i]
         sample_image_arr = np.array(sample_image, dtype=np.int32)
-        distance = np.sqrt(sum((arr - sample_image_arr)**2))
+        distance = np.sqrt(np.sum((arr - sample_image_arr) ** 2))
         distances[i] = distance
         
-        
     sorted_distances = np.argsort(distances)
-    k_elements = sorted_distances[:choose_k]
-    predicted_label = torch.mode(actual_labels[k_indices]).values.item(0)
+    k_indices = sorted_distances[:choose_k]
+    predicted_labels = [mnist_train[i][1] for i in k_indices]
 
-    return torch.mode(k_elements).values.item(0)
+    return torch.mode(predicted_labels).values.item(0)
 
 num_trials = 500
-actual_labels   = np.empty(500, dtype=object)
-predicted_labels = np.empty(500, dtype=object)
+actual_labels = np.empty(1000, dtype=object)
+predicted_labels = np.empty(1000, dtype=object)
 
 for i in range(num_trials):
-    predicted_labels[i] = find_match(np.array(mnist_test[i]), 5)
-    actual_label[i] = mnist_test[i][1]
+    input_image, true_label = mnist_test[i]
+    predicted_label = find_match(np.array(input_image).reshape(-1), 5)
+    actual_labels[i] = true_label
+    predicted_labels[i] = predicted_label
 
-print("Accuracy: " + sum(actual_label == predicted_labels) / 1000 * 100 + "%")
+accuracy = (sum(actual_labels[i] == predicted_labels[i] for i in range(500)) / 500) * 100
+print("Accuracy: {:.2f}%".format(accuracy))
