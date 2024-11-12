@@ -19,3 +19,17 @@ To run the code, you will need to have the following Python packages installed:
 - **torchvision** (for MNIST dataset)
 - **numpy** (for numerical operations)
 
+## Results
+
+The accuracy of the k-NN model on 500 randomly selected test images will be printed to the console. You can experiment with different values of `k` to see how it affects the accuracy.
+
+## Limitations
+
+- This implementation uses a simple k-NN approach and is not optimized for performance.
+- The model only uses 1,000 random samples from the training set for each test image, which can limit its accuracy.
+- It may be slow for larger datasets as it does not utilize efficient indexing methods for nearest neighbor searches.
+
+## Acknowledgements
+
+- **MNIST dataset**: A widely-used dataset for training and testing image classification models.
+- **PyTorch**: For providing easy-to-use functions for dataset handling and tensor operations.
